@@ -2,6 +2,9 @@
 -install tailwind css for create-react-app
 
 Planning website
+## 📂 Project Structure
+
+```text
 src/
 ├─ app/
 │  ├─ App.tsx                 # top-level routes & layout shell
@@ -11,11 +14,11 @@ src/
 │  └─ layout/
 │     ├─ MainLayout.tsx       # header/nav/footer wrappers
 │     └─ components/
-│        ├─ Header.tsx
+│        ├─ Header.js
 │        ├─ Nav.tsx
 │        └─ Footer.tsx
 │
-├─ pages/                     # route-level entry components (thin; delegate to features)
+├─ pages/                     # route-level entry components
 │  ├─ Home/
 │  │  └─ HomePage.tsx
 │  ├─ Explore/
@@ -32,12 +35,12 @@ src/
 │  │  └─ SignUpPage.tsx
 │  └─ NotFoundPage.tsx
 │
-├─ features/                  # feature slices = UI + state + hooks together
+├─ features/
 │  ├─ explore/
 │  │  ├─ components/
 │  │  │  ├─ SearchBar.tsx
 │  │  │  ├─ DestinationCard.tsx
-│  │  │  └─ MapView.tsx       # Leaflet/GoogleMaps switch via props
+│  │  │  └─ MapView.tsx
 │  │  ├─ hooks/
 │  │  │  └─ useDestinations.ts
 │  │  └─ api/
@@ -58,13 +61,13 @@ src/
 │  │  │  ├─ TripCard.tsx
 │  │  │  └─ TripList.tsx
 │  │  ├─ store/
-│  │  │  └─ tripsSlice.ts     # RTK slice for trips (CRUD)
+│  │  │  └─ tripsSlice.ts
 │  │  └─ hooks/
 │  │     └─ useTrips.ts
 │  │
 │  ├─ chat/
 │  │  ├─ components/
-│  │  │  ├─ AIAsk.tsx         # “Ask AI” composer
+│  │  │  ├─ AIAsk.tsx
 │  │  │  └─ ChatThread.tsx
 │  │  └─ store/
 │  │     └─ chatSlice.ts
@@ -78,17 +81,17 @@ src/
 │  │
 │  ├─ organizer/
 │  │  ├─ components/
-│  │  │  ├─ UploadBox.tsx     # Cloudinary/Firebase storage
+│  │  │  ├─ UploadBox.tsx
 │  │  │  └─ TicketCard.tsx
 │  │  └─ store/
 │  │     └─ filesSlice.ts
 │  │
-│  └─ widgets/                # bonus: pluggable mini-widgets
+│  └─ widgets/
 │     ├─ WeatherWidget.tsx
 │     ├─ CurrencyWidget.tsx
 │     └─ VisaChecker.tsx
 │
-├─ components/                # shared, reusable UI (atoms/molecules)
+├─ components/
 │  ├─ ui/
 │  │  ├─ Button.tsx
 │  │  ├─ Input.tsx
@@ -101,23 +104,23 @@ src/
 │     └─ Spinner.tsx
 │
 ├─ store/
-│  ├─ index.ts                # configureStore, middleware
+│  ├─ index.ts
 │  ├─ hooks.ts
 │  └─ slices/
 │     ├─ authSlice.ts
-│     └─ uiSlice.ts           # theme, toasts, dialogs
+│     └─ uiSlice.ts
 │
-├─ services/                  # external SDKs and adapters
+├─ services/
 │  ├─ ai/
-│  │  ├─ openaiClient.ts      # provider driver
+│  │  ├─ openaiClient.ts
 │  │  ├─ geminiClient.ts
-│  │  └─ aiGateway.ts         # single function/shape consumed by UI
+│  │  └─ aiGateway.ts
 │  ├─ maps/
 │  │  ├─ leafletClient.ts
 │  │  └─ googleMapsClient.ts
 │  ├─ firebase.ts
 │  ├─ cloudinary.ts
-│  └─ http.ts                 # fetch wrapper with interceptors
+│  └─ http.ts
 │
 ├─ hooks/
 │  ├─ useAuth.ts
@@ -128,9 +131,9 @@ src/
 ├─ styles/
 │  └─ tailwind.css
 ├─ types/
-│  ├─ trip.ts                 # Trip, Itinerary, Place, Budget types
+│  ├─ trip.ts
 │  └─ index.ts
 └─ utils/
-├─ currency.ts
-├─ geoutils.ts
-└─ validation.ts
+   ├─ currency.ts
+   ├─ geoutils.ts
+   └─ validation.ts
