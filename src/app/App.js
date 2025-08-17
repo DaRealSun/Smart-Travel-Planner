@@ -1,15 +1,19 @@
 import '../App.css';
 
-import Body from "../components/Body";
+import AuthListener from "../components/AuthListener";
+import {Provider} from "react-redux";
+import appStore from "../utils/appStore";
+import {RouterProvider} from "react-router-dom";
+import React from "react";
+import appRouter from "../router/appRouter";
+
 
 function App() {
-  return (
-    <div className="App">
-        <Body/>
-
-
-    </div>
-  );
+    return (
+        <Provider store={appStore}>
+            <RouterProvider router={appRouter}/>
+        </Provider>
+    )
 }
 
 export default App;

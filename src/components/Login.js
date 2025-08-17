@@ -1,25 +1,87 @@
 import React, {useRef, useState} from 'react';
 import Header from "./Header";
 import{checkValidData} from "../utils/validate";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../utils/firebase";
+import {useNavigate} from "react-router-dom";
+import { updateProfile } from "firebase/auth";
+import {useDispatch} from "react-redux";
+import {addUser} from "../utils/userSlice";
+
+
 const Login = () => {
 //     create state variable for checking sign in , sign up form
     const [isSignIn, setIsSignIn] = React.useState(true);
     const toggleSignIn = () => {
     setIsSignIn(!isSignIn);
+    setErrorMessage(null); // clear error message when toggling forms
     }
-    const email= useRef()
-    const password = useRef()
-    const name = useRef()
+
+    const email= useRef(null)
+    const password = useRef(null)
+    const name = useRef(null)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const[errorMessage, setErrorMessage] = useState(null);
+
     const handleButtonClick = () => {
         //Validate the form data
         // checkValidData(email,password)
-        console.log("clicked");
-        console.log(email.current.value)
-        console.log(password.current.value)
-        const message = checkValidData(name.current.value, email.current.value, password.current.value)
+        const message = isSignIn
+            ?checkValidData(null, email.current.value, password.current.value)
+            :checkValidData( name.current.value, email.current.value, password.current.value);
+
         setErrorMessage(message)
-    }
+        if(message) return; // return null if not valid data
+
+        //Sign In Sign Up Logic
+        if(!isSignIn){
+            createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    updateProfile(auth.currentUser, {
+                        displayName: name.current.value,
+                        photoURL: "https://avatars.githubusercontent.com/u/114710243?v=4&size=64"
+
+                    }).then(() => {
+                        // Profile updated!
+                        const {uid, email, displayName, photoURL} = user;
+                        dispatch(addUser({uid:uid, email:email, displayName:displayName, photoURL:photoURL}));
+
+                        navigate("/browse");
+                    }).catch((error) => {
+                        // An error occurred
+                        setErrorMessage(error);
+                    });
+
+
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMessage(errorMessage + " " + errorCode)
+                    // ..
+                });
+        } else {
+            //Sign In logic
+            signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log(user)
+                    navigate("/browse")
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMessage(errorMessage + " " + errorCode)
+
+                });
+
+        }
+    };
 
     return (
         <div className="relative h-screen w-screen overflow-hidden">
@@ -58,13 +120,13 @@ const Login = () => {
 
                     <input
                         ref={email}
-                        type="text"
+                        type="email"
                         placeholder="Email"
                         className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
                     />
                     <input
                         ref={password}
-                        type="text"
+                        type="password"
                         placeholder="Password"
                         className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
                     />
