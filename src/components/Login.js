@@ -2,11 +2,14 @@ import React, {useRef, useState} from 'react';
 import Header from "./Header";
 import{checkValidData} from "../utils/validate";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import {auth} from "../utils/firebase";
+import {auth, provider} from "../utils/firebase";
 import {useNavigate} from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import {useDispatch} from "react-redux";
 import {addUser} from "../utils/userSlice";
+
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 
 
 const Login = () => {
@@ -24,6 +27,31 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const[errorMessage, setErrorMessage] = useState(null);
+
+
+    const handleGoogleLogin = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                // IdP data available using getAdditionalUserInfo(result)
+                // ...
+                navigate("/browse")
+            }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+            navigate("/error")
+        });
+    }
 
     const handleButtonClick = () => {
         //Validate the form data
@@ -142,13 +170,20 @@ const Login = () => {
                         </h1>
                     </button>
 
-                    <p className="text-sm text-gray-600 text-center max-w-xs"
+                    <button className="text-sm text-gray-600 text-center max-w-xs underline"
                         onClick={toggleSignIn}>
                         {isSignIn
                             ? " New to Solo Top? Sign Up Now"
                             : " Already registered? Sign In Now"}
+                    </button>
 
-                    </p>
+                    <button
+                        className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition shadow-md"
+                        onClick={handleGoogleLogin}
+                        >
+                        Log in with Google
+                    </button>
+
                 </form>
             </div>
         </div>
