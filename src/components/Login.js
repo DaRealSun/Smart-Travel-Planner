@@ -3,7 +3,6 @@ import Header from "./Header";
 import{checkValidData} from "../utils/validate";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import {auth, provider} from "../utils/firebase";
-import {useNavigate} from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import {useDispatch} from "react-redux";
 import {addUser} from "../utils/userSlice";
@@ -14,19 +13,15 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const Login = () => {
 //     create state variable for checking sign in , sign up form
-    const [isSignIn, setIsSignIn] = React.useState(true);
-    const toggleSignIn = () => {
-    setIsSignIn(!isSignIn);
-    setErrorMessage(null); // clear error message when toggling forms
-    }
-
     const email= useRef(null)
     const password = useRef(null)
     const name = useRef(null)
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const [isSignIn, setIsSignIn] = React.useState(true);
     const[errorMessage, setErrorMessage] = useState(null);
+
+
 
 
     const handleGoogleLogin = () => {
@@ -39,7 +34,6 @@ const Login = () => {
                 const user = result.user;
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
-                navigate("/browse")
             }).catch((error) => {
             // Handle Errors here.
             const errorCode = error.code;
@@ -49,36 +43,45 @@ const Login = () => {
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error);
             // ...
-            navigate("/error")
+            setErrorMessage(error.message)
         });
     }
 
     const handleButtonClick = () => {
         //Validate the form data
         // checkValidData(email,password)
-        const message = isSignIn
-            ?checkValidData(null, email.current.value, password.current.value)
-            :checkValidData( name.current.value, email.current.value, password.current.value);
-
+        console.log("clicked");
+        const message = checkValidData( null, email.current.value, password.current.value)
         setErrorMessage(message)
+
         if(message) return; // return null if not valid data
 
         //Sign In Sign Up Logic
         if(!isSignIn){
-            createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+            //Sign up logic
+            createUserWithEmailAndPassword(
+                auth,
+                email.current.value,
+                password.current.value
+            )
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-                    updateProfile(auth.currentUser, {
+                    updateProfile(user, {
                         displayName: name.current.value,
                         photoURL: "https://avatars.githubusercontent.com/u/114710243?v=4&size=64"
 
                     }).then(() => {
                         // Profile updated!
-                        const {uid, email, displayName, photoURL} = user;
-                        dispatch(addUser({uid:uid, email:email, displayName:displayName, photoURL:photoURL}));
+                        const {uid, email, displayName, photoURL} = auth.user;
+                        dispatch(
+                            addUser({
+                                uid:uid,
+                                email:email,
+                                displayName:displayName,
+                                photoURL:photoURL
+                            }));
 
-                        navigate("/browse");
                     }).catch((error) => {
                         // An error occurred
                         setErrorMessage(error);
@@ -98,19 +101,21 @@ const Login = () => {
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-                    console.log(user)
-                    navigate("/browse")
+                    // ...
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    setErrorMessage(errorMessage + " " + errorCode)
-
                 });
 
         }
     };
 
+
+    const toggleSignIn = () => {
+        setIsSignIn(!isSignIn);
+       // setErrorMessage(null); // clear error message when toggling forms
+    }
     return (
         <div className="relative h-screen w-screen overflow-hidden">
             <Header />

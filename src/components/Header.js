@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import * as byPrefixAndName from "@fortawesome/free-regular-svg-icons";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {auth} from "../utils/firebase";
-import {signOut } from "firebase/auth";
+import {onAuthStateChanged, signOut} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 const Header = () => {
@@ -11,14 +11,14 @@ const Header = () => {
     const dispatch = useDispatch();
     const user = useSelector(store => store.user);
     const handleSignOut = () => {
-        signOut(auth).then(() => {
-            // Sign-out successful.
-            navigate("/")
-        }).catch((error) => {
-            // An error happened.
-            navigate("/error");
-        });
-    }
+        signOut(auth)
+            .then(() => {})
+            .catch((error) => {
+                navigate("/error");
+            });
+    };
+
+
     return (
         <div className="flex items-center justify-between absolute z-30 px-6 py-4 w-screen transition bg-gradient-to-b from-cyan-900 to-transparent ">
             <img
