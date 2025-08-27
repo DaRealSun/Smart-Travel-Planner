@@ -1,14 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import * as byPrefixAndName from "@fortawesome/free-regular-svg-icons";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {auth} from "../utils/firebase";
-import {onAuthStateChanged, signOut} from "firebase/auth";
+import {signOut} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 const Header = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+
     const user = useSelector(store => store.user);
     const handleSignOut = () => {
         signOut(auth)

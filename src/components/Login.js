@@ -8,6 +8,7 @@ import {useDispatch} from "react-redux";
 import {addUser} from "../utils/userSlice";
 
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {USER_AVATAR} from "../utils/constants";
 
 
 
@@ -69,7 +70,7 @@ const Login = () => {
                     const user = userCredential.user;
                     updateProfile(user, {
                         displayName: name.current.value,
-                        photoURL: "https://avatars.githubusercontent.com/u/114710243?v=4&size=64"
+                        photoURL: USER_AVATAR
 
                     }).then(() => {
                         // Profile updated!
