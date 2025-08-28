@@ -1,13 +1,11 @@
 import React, {useRef, useState} from 'react';
 import Header from "./Header";
 import{checkValidData} from "../utils/validate";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithRedirect} from "firebase/auth";
 import {auth, provider} from "../utils/firebase";
 import { updateProfile } from "firebase/auth";
 import {useDispatch} from "react-redux";
 import {addUser} from "../utils/userSlice";
-
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {USER_AVATAR} from "../utils/constants";
 
 
@@ -22,31 +20,11 @@ const Login = () => {
     const [isSignIn, setIsSignIn] = React.useState(true);
     const[errorMessage, setErrorMessage] = useState(null);
 
+    const handleGoogleSignIn = () => {
+        console.log("Redirecting with provider");
+        signInWithRedirect(auth, provider);
+    };
 
-
-
-    const handleGoogleLogin = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
-            }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.customData.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            // ...
-            setErrorMessage(error.message)
-        });
-    }
 
     const handleButtonClick = () => {
         //Validate the form data
@@ -97,6 +75,7 @@ const Login = () => {
                     // ..
                 });
         } else {
+
             //Sign In logic
             signInWithEmailAndPassword(auth, email.current.value, password.current.value)
                 .then((userCredential) => {
@@ -136,7 +115,7 @@ const Login = () => {
                 <form onSubmit={(e) => e.preventDefault()}
                     className="bg-white/80 backdrop-blur-xl shadow-xl rounded-3xl px-10 py-12 w-96 flex flex-col items-center space-y-5 border border-white/30">
                     <h1 className="text-4xl font-bold text-amber-600 drop-shadow-md">
-                        {isSignIn ? 'Sign In' : 'Sign Up'}
+                        {isSignIn ? 'Sign In Hello World' : 'Sign Up'}
                     </h1>
 
                     <p className="text-sm text-gray-600 text-center max-w-xs">
@@ -185,7 +164,8 @@ const Login = () => {
 
                     <button
                         className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition shadow-md"
-                        onClick={handleGoogleLogin}
+                        // onClick={handleGoogleLogin}
+                        onClick={handleGoogleSignIn}
                         >
                         Log in with Google
                     </button>
