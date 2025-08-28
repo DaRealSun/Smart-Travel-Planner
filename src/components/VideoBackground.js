@@ -10,12 +10,12 @@ const VideoBackground = () => {
         <div className="relative w-full h-screen overflow-hidden">
             {youTubeVideo && (
                 <iframe
+                    tabIndex="-1"
                     className="absolute top-0 left-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${youTubeVideo}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideo}&start=18`}
+                    src={`https://www.youtube.com/embed/${youTubeVideo}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideo}&start=18&controls=0&modestbranding=1&rel=0`}
                     title="YouTube video player"
                     frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
+                    allow="autoplay; fullscreen"
                     style={{
                         width: "100vw",
                         height: "56.25vw",

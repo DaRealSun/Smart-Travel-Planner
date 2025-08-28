@@ -1,12 +1,19 @@
 import React, {useRef, useState} from 'react';
 import Header from "./Header";
 import{checkValidData} from "../utils/validate";
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithRedirect} from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signInWithRedirect
+} from "firebase/auth";
 import {auth, provider} from "../utils/firebase";
 import { updateProfile } from "firebase/auth";
 import {useDispatch} from "react-redux";
 import {addUser} from "../utils/userSlice";
 import {USER_AVATAR} from "../utils/constants";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -22,7 +29,11 @@ const Login = () => {
 
     const handleGoogleSignIn = () => {
         console.log("Redirecting with provider");
-        signInWithRedirect(auth, provider);
+        //Work best for mobile app
+        //signInWithRedirect(auth, provider);
+        //Good for web app
+        signInWithPopup(auth, provider)
+
     };
 
 
@@ -48,11 +59,12 @@ const Login = () => {
                     const user = userCredential.user;
                     updateProfile(user, {
                         displayName: name.current.value,
-                        photoURL: USER_AVATAR
 
                     }).then(() => {
+                        console.log("Updated user");
+
                         // Profile updated!
-                        const {uid, email, displayName, photoURL} = auth.user;
+                        const {uid, email, displayName, photoURL} = auth.currentUser;
                         dispatch(
                             addUser({
                                 uid:uid,
@@ -115,7 +127,7 @@ const Login = () => {
                 <form onSubmit={(e) => e.preventDefault()}
                     className="bg-white/80 backdrop-blur-xl shadow-xl rounded-3xl px-10 py-12 w-96 flex flex-col items-center space-y-5 border border-white/30">
                     <h1 className="text-4xl font-bold text-amber-600 drop-shadow-md">
-                        {isSignIn ? 'Sign In Hello World' : 'Sign Up'}
+                        {isSignIn ? 'Sign In' : 'Sign Up'}
                     </h1>
 
                     <p className="text-sm text-gray-600 text-center max-w-xs">

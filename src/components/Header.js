@@ -5,6 +5,7 @@ import {auth} from "../utils/firebase";
 import {signOut} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {USER_AVATAR} from "../utils/constants";
 const Header = () => {
     const navigate = useNavigate();
 
@@ -28,15 +29,30 @@ const Header = () => {
             {
 
                 user && (
-            <div className="flex items-center gap-2 text-white">
-                <FontAwesomeIcon icon={faUser} className="text-xl" />
-                <img
-                    className="w-32 "
-                    alt="usericon"
-                     src={user?.photoURL}/>
+            <div className="flex items-center gap-5 text-white">
+
+                {user?.photoURL ? (
+                    <img
+                        className="w-10 h-10 rounded-full object-cover"
+                        alt="usericon"
+                        src={user.photoURL}
+                    />
+                ) : (
+                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                        <FontAwesomeIcon icon={faUser} className="text-xl text-gray-500" />
+                    </div>
+                )}
+
+
                 <button
                     onClick={handleSignOut}
-                    className="hover:underline">(Sign Out)</button>
+                    className="mr-6 px-3 py-2 border-2 m border-yellow-500
+             text-yellow-500 hover:bg-yellow-500 hover:text-white
+             text-lg font-semibold rounded-lg
+             transition duration-300 ease-in-out"
+                >
+                    🚪 Sign Out
+                </button>
             </div>
                 )}
         </div>

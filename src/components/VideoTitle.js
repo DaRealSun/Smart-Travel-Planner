@@ -1,5 +1,9 @@
 import React from "react";
 
+function handleClick() {
+
+}
+
 const VideoTitle = ({ title, overview }) => {
     return (
 
@@ -15,9 +19,17 @@ const VideoTitle = ({ title, overview }) => {
                 <p className="mt-4 text-lg max-w-xl drop-shadow-md">
                     Explore nature, travel solo, and find peace in the wilderness.
                 </p>
-                <button className="mt-6 px-6 py-3 bg-yellow-600 hover:bg-red-700 text-lg font-semibold rounded-lg shadow-md transition duration-300">
+                <button
+                    onClick={handleClick}
+                    className="mt-6 px-6 py-3
+    bg-gradient-to-l bg-amber-600
+    text-white text-lg font-semibold rounded-lg shadow-lg
+     duration-1000 ease-in-out
+    hover:from-red-600 hover:to-amber-600"
+                >
                     ✍️ Write your own story
                 </button>
+
             </div>
         </div>
     );
