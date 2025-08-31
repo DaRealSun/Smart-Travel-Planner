@@ -5,15 +5,12 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInWithPopup,
-    signInWithRedirect
 } from "firebase/auth";
 import {auth, provider} from "../utils/firebase";
 import { updateProfile } from "firebase/auth";
 import {useDispatch} from "react-redux";
 import {addUser} from "../utils/userSlice";
-import {USER_AVATAR} from "../utils/constants";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
+
 
 
 
