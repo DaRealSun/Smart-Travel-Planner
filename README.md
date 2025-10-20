@@ -1,7 +1,56 @@
--use command npx create-react-app my-project
--install tailwind css for create-react-app
+# 🌍 Smart Travel App
 
-Planning website
+An AI-powered travel planning platform designed for solo travelers. Users can explore destinations, create smart itineraries, view attractions on maps, and get personalized recommendations.  
+
+---
+
+## 🚀 Features
+
+### 🗺️ Travel Exploration
+- Search and explore destinations across the globe
+- AI-powered recommendations tailored for solo travelers
+- Destination details with descriptions, attractions, and travel insights
+
+### 📌 Maps Integration
+- Google Maps API integration for:
+  - Viewing locations and attractions
+  - Interactive markers
+  - Route planning and navigation
+- Optimized API calls with caching to handle Google Maps quota limits
+
+### 📅 Itinerary Builder
+- Create and manage smart itineraries
+- Suggested activities and destinations based on user preferences
+- Share itineraries with friends for collaborative planning
+
+### 🔑 Authentication & Security
+- User login and signup with Google OAuth 2.0
+- Secure session handling
+- HTTPS enabled via Cloudflare
+
+### 📱 Responsive UI
+- Built with Tailwind CSS for mobile-first design
+- Shimmer effects for smooth loading states
+- Dark/light mode ready
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React.js, Tailwind CSS, Redux Toolkit  
+- **APIs:** Google Maps API, YouTube API, AI-powered recommendation logic  
+- **Authentication:** OAuth 2.0 (Google Sign-In)  
+- **Testing:** Jest, React Testing Library  
+- **Deployment:** Docker, Google Cloud, Cloudflare CDN/SSL  
+
+---
+
+## 📦 Project Setup
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/your-username/smart-travel-app.git
+cd smart-travel-app
 ## 📂 Project Structure
 
 ```text
